@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../db/dev.db"
+}
+
+model Grupo {
+  id        String   @id @default(cuid())
+  nombre    String
+  padreId   String?
+  padre     Grupo?   @relation("GrupoHierarchy", fields: [padreId], references: [id])
+  subgrupos Grupo[]  @relation("GrupoHierarchy")
+  cursos    Curso[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("grupos")
+}
+
+model Curso {
+  id        String   @id @default(cuid())
+  nombre    String
+  fecha     String
+  temas     Json     @default("[]")
+  grupoId   String
+  grupo     Grupo    @relation(fields: [grupoId], references: [id])
+  clases    Clase[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cursos")
+}
+
+model Clase {
+  id          String   @id @default(cuid())
+  fecha       DateTime @default(now())
+  preparacion String
+  tema        String
+  guion       String
+  reflexion   String?
+  duración   Int?     @map("duracion") // En minutos
+  asistentes  Int?
+  cursoId     String
+  curso       Curso    @relation(fields: [cursoId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("clases")
+}
