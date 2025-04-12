@@ -10,11 +10,7 @@ export const groupsController = new Hono()
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			const group = await findGroupById(id)
-			if (!group) {
-				return c.json({ error: "Grupo no encontrado" }, 404)
-			}
-			return c.json(group)
+			return c.json(await findGroupById(id))
 		})
 	.post('/',
 		zValidator("json", createGroupSchema),
@@ -28,20 +24,11 @@ export const groupsController = new Hono()
 		async (c) => {
 			const { id } = c.req.valid("param")
 			const data = c.req.valid("json")
-			try {
-				const group = await updateGroup(id, data)
-				return c.json(group)
-			} catch (error) {
-				return c.json({ error: "Error al actualizar el grupo" }, 400)
-			}
+			return c.json(await updateGroup(id, data))
 		})
 	.delete('/:id',
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			try {
-				return c.json(await deleteGroup(id))
-			} catch (error) {
-				return c.json({ error: "Error al eliminar el grupo" }, 400)
-			}
+			return c.json(await deleteGroup(id))
 		})

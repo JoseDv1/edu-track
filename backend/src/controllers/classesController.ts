@@ -20,11 +20,7 @@ export const classesController = new Hono()
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			const classData = await findClassById(id)
-			if (!classData) {
-				return c.json({ error: "Clase no encontrada" }, 404)
-			}
-			return c.json(classData)
+			return c.json(await findClassById(id))
 		})
 	.post('/',
 		zValidator("json", createClassSchema),
@@ -38,20 +34,12 @@ export const classesController = new Hono()
 		async (c) => {
 			const { id } = c.req.valid("param")
 			const data = c.req.valid("json")
-			try {
-				const classData = await updateClass(id, data)
-				return c.json(classData)
-			} catch (error) {
-				return c.json({ error: "Error al actualizar la clase" }, 400)
-			}
+			return c.json(await updateClass(id, data))
+
 		})
 	.delete('/:id',
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			try {
-				return c.json(await deleteClass(id))
-			} catch (error) {
-				return c.json({ error: "Error al eliminar la clase" }, 400)
-			}
+			return c.json(await deleteClass(id))
 		})

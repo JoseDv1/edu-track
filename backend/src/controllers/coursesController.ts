@@ -20,11 +20,7 @@ export const coursesController = new Hono()
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			const course = await findCourseById(id)
-			if (!course) {
-				return c.json({ error: "Curso no encontrado" }, 404)
-			}
-			return c.json(course)
+			return c.json(await findCourseById(id))
 		})
 	.post('/',
 		zValidator("json", createCourseSchema),
@@ -38,20 +34,11 @@ export const coursesController = new Hono()
 		async (c) => {
 			const { id } = c.req.valid("param")
 			const data = c.req.valid("json")
-			try {
-				const course = await updateCourse(id, data)
-				return c.json(course)
-			} catch (error) {
-				return c.json({ error: "Error al actualizar el curso" }, 400)
-			}
+			return c.json(await updateCourse(id, data))
 		})
 	.delete('/:id',
 		zValidator("param", z.object({ id: z.string() })),
 		async (c) => {
 			const { id } = c.req.valid("param")
-			try {
-				return c.json(await deleteCourse(id))
-			} catch (error) {
-				return c.json({ error: "Error al eliminar el curso" }, 400)
-			}
+			return c.json(await deleteCourse(id))
 		})
