@@ -1,9 +1,14 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
+import { apiRouter } from './router'
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use(cors())
+const routes = app.route('/api', apiRouter)
 
-export default app
+
+Bun.serve({
+  fetch: app.fetch,
+  port: Bun.env.PORT ?? 3000,
+})
