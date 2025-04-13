@@ -18,7 +18,15 @@ export async function findGroups() {
 		include: {
 			cursos: true,
 			padre: true,
-			subgrupos: true
+			subgrupos: {
+				include: {
+					subgrupos: {
+						include: {
+							subgrupos: true
+						}
+					}
+				}
+			}
 		}
 	});
 	return groups;

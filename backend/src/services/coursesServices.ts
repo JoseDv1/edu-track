@@ -3,8 +3,8 @@ import { prisma } from "../lib/prisma";
 
 export const createCourseSchema = z.object({
 	nombre: z.string().min(1, "El nombre del curso es requerido"),
-	fecha: z.string(),
-	temas: z.array(z.string()).optional().default([]),
+	fecha: z.string().optional(),
+	temas: z.array(z.string()).optional(),
 	grupoId: z.string().min(1, "El ID del grupo es requerido")
 });
 export const updateCourseSchema = createCourseSchema.partial();
@@ -35,12 +35,8 @@ export async function findCourseById(id: string) {
 }
 
 export async function createCourse(data: CreateCourseSchema) {
-	const { temas, ...rest } = data;
 	return await prisma.curso.create({
-		data: {
-			...rest,
-			temas: temas || []
-		},
+		data,
 		include: {
 			grupo: true
 		}
@@ -48,18 +44,9 @@ export async function createCourse(data: CreateCourseSchema) {
 }
 
 export async function updateCourse(id: string, data: UpdateCourseSchema) {
-	const { temas, ...rest } = data;
-	const currentCourse = await prisma.curso.findUnique({
-		where: { id },
-		select: { temas: true }
-	});
-
 	return await prisma.curso.update({
 		where: { id },
-		data: {
-			...rest,
-			...(temas && { temas })
-		},
+		data,
 		include: {
 			grupo: true
 		}

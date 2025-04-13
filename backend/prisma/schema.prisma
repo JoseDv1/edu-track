@@ -24,7 +24,6 @@ model Grupo {
 model Curso {
   id        String   @id @default(cuid())
   nombre    String
-  fecha     String
   temas     Json     @default("[]")
   grupoId   String
   grupo     Grupo    @relation(fields: [grupoId], references: [id])
