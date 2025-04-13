@@ -1,16 +1,31 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import GroupTree from "@/components/GroupTree.svelte";
-import { API_URL, type Grupo } from "@/lib/api";
-
-const URL = `${API_URL}/api/groups`;
-const res = await fetch(URL);
-if (!res.ok) {
-	throw new Error("Failed to fetch groups");
-}
-const groups: Grupo[] = await res.json();
 ---
 
 <Layout title="EduTrack - Your course tracking for Teachers">
-	<GroupTree grupos={groups} client:only="svelte" />
+	<section>
+		<h2>Bienvenido a EduTrack</h2>
+		<p>
+			EduTrack es una aplicación diseñada para ayudar a los profesores a llevar
+			un control eficiente de sus cursos y alumnos. Con EduTrack, podrás
+			gestionar tus clases, asignar tareas y hacer un seguimiento del progreso
+			de tus estudiantes de manera sencilla y efectiva.
+		</p>
+	</section>
 </Layout>
+
+<style>
+	section {
+		padding: 2rem;
+	}
+
+	h2 {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	p {
+		font-size: 1.25rem;
+		line-height: 1.5;
+	}
+</style>

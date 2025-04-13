@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import GroupDetail from "@/components/GroupDetail.svelte";
+
+// Obtener el ID del grupo desde los parámetros de la URL
+const { id } = Astro.params;
+---
+
+<Layout title="Grupo">
+	<div class="container">
+		<GroupDetail groupId={id} client:load />
+	</div>
+</Layout>
+
+<style>
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+</style>

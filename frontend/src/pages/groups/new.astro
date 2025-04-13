@@ -1,0 +1,147 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import GroupForm from "@/components/GroupForm.svelte";
+---
+
+<Layout title="Nuevo Grupo">
+	<div class="container">
+		<h1>Crear Nuevo Grupo</h1>
+
+		<div id="mensajeContainer" class="mensaje-container"></div>
+
+		<GroupForm client:load />
+	</div>
+</Layout>
+
+<style>
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	h1 {
+		margin-bottom: 2rem;
+		color: var(--color-primary);
+	}
+
+	.mensaje-container {
+		margin-bottom: 1.5rem;
+	}
+
+	.alert {
+		padding: 1rem;
+		border-radius: 4px;
+		margin-bottom: 1.5rem;
+		transition: opacity 0.3s ease;
+	}
+
+	.alert-success {
+		background-color: #e6f7e6;
+		color: #2e7d32;
+		border: 1px solid #c8e6c9;
+	}
+
+	.alert-error {
+		background-color: #fdeded;
+		color: #d32f2f;
+		border: 1px solid #f5c2c7;
+	}
+</style>
+
+<style>
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	h1 {
+		margin-bottom: 2rem;
+		color: var(--color-primary);
+	}
+
+	.form {
+		background-color: #fff;
+		padding: 1.5rem;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-weight: 500;
+	}
+
+	input,
+	select {
+		width: 100%;
+		padding: 0.75rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 1rem;
+	}
+
+	input:focus,
+	select:focus {
+		outline: none;
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.2);
+	}
+
+	.form-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.btn {
+		padding: 0.75rem 1.5rem;
+		border: none;
+		border-radius: 4px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.btn-primary {
+		background-color: var(--color-primary);
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background-color: var(--color-primary-hover, #0055aa);
+	}
+
+	.btn-secondary {
+		background-color: #f5f5f5;
+		color: #333;
+		text-decoration: none;
+	}
+
+	.btn-secondary:hover {
+		background-color: #e5e5e5;
+	}
+
+	.alert {
+		padding: 1rem;
+		border-radius: 4px;
+		margin-bottom: 1.5rem;
+	}
+
+	.alert-success {
+		background-color: #e6f7e6;
+		color: #2e7d32;
+		border: 1px solid #c8e6c9;
+	}
+
+	.alert-error {
+		background-color: #fdeded;
+		color: #d32f2f;
+		border: 1px solid #f5c2c7;
+	}
+</style>
