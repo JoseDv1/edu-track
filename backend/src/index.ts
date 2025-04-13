@@ -6,6 +6,7 @@ const app = new Hono()
 
 app.use(cors())
 const routes = app.route('/api', apiRouter)
+export type RPC = typeof routes
 
 // Error handling
 app.notFound((c) => {
@@ -24,4 +25,5 @@ Bun.serve({
   development: process.env.NODE_ENV !== 'production',
 })
 
-console.log(`🚀 Servidor corriendo en http://localhost:${Bun.env.PORT || 3000}`)
+console.log(`🚀 Servidor corriendo en http://localhost:${Bun.env.PORT ?? 3000}`)
+
