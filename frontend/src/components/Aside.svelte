@@ -1,6 +1,7 @@
 <script lang="ts">
 	import GroupTree from "@/components/GroupTree.svelte";
 	import { fetchGroups, groups } from "@/lib/groups";
+	import { asideVisible } from "@/lib/uiState";
 
 	const themes = ["light", "dark", "ligth dark"];
 	let currentTheme = $state(
@@ -14,7 +15,7 @@
 	};
 </script>
 
-<aside>
+<aside class="aside" class:hidden={!$asideVisible}>
 	<header>
 		<h1>Edu-Track</h1>
 		<button onclick={() => toggleTheme()} class="btn-theme">
@@ -59,6 +60,14 @@
 		box-shadow: var(--shadow-card);
 		border-radius: 0 24px 24px 0;
 		z-index: 999;
+		transition:
+			transform 0.3s ease-in-out,
+			margin-left 0.3s ease-in-out;
+	}
+
+	aside.hidden {
+		transform: translateX(-100%);
+		margin-left: -250px;
 	}
 
 	h1 {
