@@ -145,17 +145,6 @@
 		z-index: 1000;
 	}
 
-	.warning {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem;
-		border-radius: 4px;
-		background-color: rgba(241, 196, 15, 0.1);
-		color: #9b870c;
-		font-size: 0.9rem;
-	}
-
 	.actions {
 		display: flex;
 		gap: 0.5rem;
@@ -214,9 +203,5 @@
 		color: var(--color-error);
 		font-size: 0.9rem;
 		margin: 0.5rem 0 0 0;
-	}
-
-	.warning svg {
-		flex-shrink: 0;
 	}
 </style>
