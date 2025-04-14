@@ -19,25 +19,22 @@
 		<main>
 			<header>
 				<h1>{curso.nombre}</h1>
-				{#if curso.grupo}
-					<p>
-						Grupo: <a href={`/groups/${curso.grupo.id}`}>{curso.grupo.nombre}</a
-						>
-					</p>
-				{/if}
+				<p>
+					Grupo: <a href={`/groups/${curso.grupo.id}`}>{curso.grupo.nombre}</a>
+				</p>
 				<p>Fecha: {new Date(curso.createdAt).toLocaleDateString("es-ES")}</p>
 			</header>
 
-			{#if curso.temas}
-				<section class="temas">
-					<h2>Temas</h2>
-					<ul>
-						{#each typeof curso.temas === "string" ? JSON.parse(curso.temas) : curso.temas as tema}
-							<li>{tema}</li>
-						{/each}
-					</ul>
-				</section>
-			{/if}
+			<section class="temas">
+				<h2>Temas</h2>
+				<ul>
+					{#each typeof curso.temas === "string" ? JSON.parse(curso.temas) : curso.temas as tema}
+						<li>{tema}</li>
+					{:else}
+						<li>Este curso no tiene temas registrados actualmente.</li>
+					{/each}
+				</ul>
+			</section>
 
 			<section class="clases">
 				<header>
@@ -45,19 +42,17 @@
 					<a href={`/add-class?course=${courseId}`}>Agregar Clase</a>
 				</header>
 				<div class="clases-grid">
-					{#if curso.clases && curso.clases.length > 0}
-						{#each curso.clases as clase, index}
-							<div class="clase-card">
-								<h3>{clase.tema || `Clase ${index + 1}`}</h3>
-								<p>
-									Fecha: {new Date(clase.fecha).toLocaleDateString("es-ES")}
-								</p>
-								<a href={`/classes/${clase.id}`}>Ver detalles</a>
-							</div>
-						{:else}
-							<p>Este curso no tiene clases registradas actualmente.</p>
-						{/each}
-					{/if}
+					{#each curso.clases as clase, index}
+						<div class="clase-card">
+							<h3>{clase.tema + ` - Clase ${index + 1}`}</h3>
+							<p>
+								Fecha: {new Date(clase.fecha).toLocaleDateString("es-ES")}
+							</p>
+							<a href={`/classes/${clase.id}`}>Ver detalles</a>
+						</div>
+					{:else}
+						<p>Este curso no tiene clases registradas actualmente.</p>
+					{/each}
 				</div>
 			</section>
 		</main>
@@ -118,6 +113,10 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		gap: 1.5rem;
+
+		&:has(> p) {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.clase-card {

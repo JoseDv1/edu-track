@@ -2,31 +2,11 @@
 	import GroupTree from "@/components/GroupTree.svelte";
 	import { fetchGroups, groups } from "@/lib/groups";
 	import { asideVisible } from "@/lib/uiState";
-
-	const themes = ["light", "dark", "ligth dark"];
-	let currentTheme = $state(
-		document.documentElement.style.colorScheme ?? "light"
-	);
-
-	const toggleTheme = () => {
-		const newTheme = themes[(themes.indexOf(currentTheme) + 1) % themes.length];
-		document.documentElement.style.colorScheme = newTheme;
-		currentTheme = newTheme;
-	};
 </script>
 
 <aside class="aside" class:hidden={!$asideVisible}>
 	<header>
 		<h1>Edu-Track</h1>
-		<button onclick={() => toggleTheme()} class="btn-theme">
-			{#if currentTheme === "dark"}
-				🌙
-			{:else if currentTheme === "light"}
-				☀️
-			{:else}
-				💻
-			{/if}
-		</button>
 	</header>
 
 	<nav>

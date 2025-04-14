@@ -1,0 +1,219 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SvelteMarkdown from "svelte-markdown";
+
+const { id } = Astro.params;
+
+if (!id) {
+	return Astro.redirect("/");
+}
+
+let clase;
+try {
+	const res = await fetch("http://localhost:3000/api/classes/" + id);
+	if (!res.ok) {
+		throw new Error("Error al obtener la clase");
+	}
+	clase = await res.json();
+} catch (error) {
+	console.error("Error al obtener la clase:", error);
+	return Astro.redirect("/");
+}
+
+if (!clase) {
+	return Astro.redirect("/");
+}
+
+// Formatear la fecha
+const fechaFormateada = new Date(clase.fecha).toLocaleDateString("es-ES", {
+	weekday: "long",
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<Layout title={`Clase: ${clase.tema}`}>
+	<div class="class-detail">
+		<header>
+			<h1>{clase.tema}</h1>
+			<div class="meta">
+				<p class="date">
+					<span class="label">Fecha:</span>
+					{fechaFormateada}
+				</p>
+				<p class="course">
+					<span class="label">Curso:</span>
+					<a href={`/courses/${clase.cursoId}`}>{clase.curso?.nombre}</a>
+				</p>
+				{
+					clase.duracion && (
+						<p class="duration">
+							<span class="label">Duración:</span>
+							{clase.duracion} minutos
+						</p>
+					)
+				}
+				{
+					clase.asistentes !== undefined && clase.asistentes !== null && (
+						<p class="attendees">
+							<span class="label">Asistentes:</span>
+							{clase.asistentes}
+						</p>
+					)
+				}
+			</div>
+		</header>
+
+		<section class="content-section">
+			<h2>Preparación</h2>
+			<div class="markdown-content">
+				<!-- @ts-ignore -->
+				<SvelteMarkdown source={clase.preparacion} />
+			</div>
+		</section>
+
+		<section class="content-section">
+			<h2>Guión</h2>
+			<div class="markdown-content">
+				<!-- @ts-ignore -->
+				<SvelteMarkdown source={clase.guion} />
+			</div>
+		</section>
+
+		{
+			clase.reflexion && (
+				<section class="content-section">
+					<h2>Reflexión</h2>
+					<div class="markdown-content">
+				<!-- @ts-ignore -->
+						<SvelteMarkdown source={clase.reflexion} />
+					</div>
+				</section>
+			)
+		}
+
+		<div class="actions">
+			<a href={`/classes/${id}/edit`} class="btn primary">Editar clase</a>
+			<a href={`/courses/${clase.cursoId}`} class="btn">Volver al curso</a>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.class-detail {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+
+	header {
+		margin-bottom: 2rem;
+		border-bottom: 1px solid #e0e0e0;
+		padding-bottom: 1rem;
+	}
+
+	h1 {
+		margin-bottom: 1rem;
+		color: var(--color-primary);
+		font-size: 2rem;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		font-size: 0.9rem;
+		color: var(--color-text-secondary);
+	}
+
+	.label {
+		font-weight: bold;
+		margin-right: 0.5rem;
+	}
+
+	.content-section {
+		margin-bottom: 2rem;
+		padding: 1rem;
+		background-color: var(--color-surface);
+		border-radius: 8px;
+		box-shadow: var(--shadow-card);
+	}
+
+	h2 {
+		color: var(--color-primary);
+		margin-bottom: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.markdown-content {
+		line-height: 1.6;
+	}
+
+	.markdown-content :global(h1),
+	.markdown-content :global(h2),
+	.markdown-content :global(h3) {
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.markdown-content :global(p) {
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(ul),
+	.markdown-content :global(ol) {
+		margin-left: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.markdown-content :global(code) {
+		background-color: #f5f5f5;
+		padding: 0.2rem 0.4rem;
+		border-radius: 3px;
+		font-family: monospace;
+	}
+
+	.markdown-content :global(pre) {
+		background-color: #f5f5f5;
+		padding: 1rem;
+		border-radius: 4px;
+		overflow-x: auto;
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(blockquote) {
+		border-left: 4px solid #e0e0e0;
+		padding-left: 1rem;
+		margin-left: 0;
+		color: #666;
+	}
+
+	.actions {
+		display: flex;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.btn {
+		padding: 0.6rem 1.2rem;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 1rem;
+		text-decoration: none;
+		text-align: center;
+		background-color: #f2f2f2;
+		color: #333;
+	}
+
+	.btn.primary {
+		background-color: var(--color-primary, #4a55a2);
+		color: white;
+	}
+</style>
