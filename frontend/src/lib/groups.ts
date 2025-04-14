@@ -37,3 +37,27 @@ export const createGroup = async (data: CreateGroupData) => {
 	})
 	await fetchGroups();
 }
+
+export interface UpdateGroupData {
+	nombre?: string;
+	padreId?: string;
+}
+
+export const updateGroup = async (id: string, data: UpdateGroupData) => {
+	const response = await apiTypes.api.groups[":id"].$put({
+		param: { id },
+		json: data
+	});
+
+	await fetchGroups();
+	return await response.json();
+}
+
+export const deleteGroup = async (id: string) => {
+	const response = await apiTypes.api.groups[":id"].$delete({
+		param: { id }
+	});
+
+	await fetchGroups();
+	return await response.json();
+}

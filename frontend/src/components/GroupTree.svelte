@@ -39,6 +39,7 @@
 		flex-direction: column;
 		gap: 1rem;
 		list-style-type: none;
+		overflow-x: hidden;
 	}
 
 	summary {
@@ -68,11 +69,19 @@
 	}
 
 	details > summary::after {
-		content: "+";
+		content: "";
+		width: 16px;
+		height: 16px;
+		display: inline-block;
+		background-image: url("/icons/chevron.svg");
+		background-size: contain;
+		background-repeat: no-repeat;
+		transform: rotate(0deg);
+		transition: transform 0.3s ease;
 	}
 
 	details[open] > summary::after {
-		content: "-";
+		transform: rotate(90deg);
 	}
 
 	a {

@@ -1,9 +1,10 @@
 <script>
 	export let grupo;
 	export let indent = 0;
+	export let selected = false;
 </script>
 
-<option value={grupo.id} name="padreId">
+<option value={grupo.id} name="padreId" {selected}>
 	{indent === 0 ? "" : "—>".repeat(indent)}
 	{grupo.nombre}
 </option>

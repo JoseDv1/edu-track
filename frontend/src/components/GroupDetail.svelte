@@ -11,18 +11,18 @@
 </script>
 
 {#await getGroupById(groupId)}
-	<div class="loading-container">
-		<div class="loader"></div>
+	<div role="status" class="loading">
+		<div aria-hidden="true"></div>
 		<p>Cargando información del grupo...</p>
 	</div>
 {:then grupo}
 	{#if grupo}
-		<div class="group-container">
-			<header class="group-header">
+		<main>
+			<header>
 				<h1>{grupo.nombre}</h1>
 				{#if grupo.padre}
-					<p class="group-parent">
-						Perten: <a href={`/groups/${grupo.padre.id}`}
+					<p>
+						Pertenece a: <a href={`/groups/${grupo.padre.id}`}
 							>{grupo.padre.nombre}</a
 						>
 					</p>
@@ -30,58 +30,62 @@
 			</header>
 
 			{#if grupo.subgrupos && grupo.subgrupos.length > 0}
-				<div class="section">
+				<section class="subgrupos">
 					<h2>Subgrupos</h2>
-					<div class="subgroups-list">
+					<nav>
 						{#each grupo.subgrupos as subgrupo}
-							<a href={`/groups/${subgrupo.id}`} class="subgroup-item">
-								{subgrupo.nombre}
+							<a href={`/groups/${subgrupo.id}`}>
+								<span>
+									<img src="/icons/chevron.svg" alt="Ver subgrupo" />
+								</span>
+								<span>{subgrupo.nombre}</span>
 							</a>
 						{/each}
-					</div>
-				</div>
+					</nav>
+				</section>
 			{/if}
 
-			<div class="section">
-				<h2>Cursos activos</h2>
-				<div class="courses-grid">
+			<section class="cursos">
+				<header>
+					<h2>Cursos activos</h2>
+					<a href={`/add-course?group=${groupId}`}>Agregar Curso</a>
+				</header>
+				<div>
 					{#each grupo.cursos as curso}
 						<CourseCard {curso} />
 					{:else}
-						<p class="no-courses">
-							Este grupo no tiene cursos activos actualmente.
-						</p>
+						<p>Este grupo no tiene cursos activos actualmente.</p>
 					{/each}
 				</div>
-			</div>
-		</div>
+			</section>
+		</main>
 	{/if}
 {:catch error}
-	<div class="error-container">
+	<div>
 		<h2>Error</h2>
 		<p>{error.message || "Error desconocido"}</p>
-		<a href="/groups" class="btn">Volver a grupos</a>
+		<a href="/groups">Volver a grupos</a>
 	</div>
 {/await}
 
 <style>
-	.loading-container {
+	div[role="status"].loading {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		padding: 3rem;
 		text-align: center;
-	}
 
-	.loader {
-		border: 4px solid rgba(0, 0, 0, 0.1);
-		border-radius: 50%;
-		border-top: 4px solid var(--color-primary);
-		width: 40px;
-		height: 40px;
-		animation: spin 1s linear infinite;
-		margin-bottom: 1rem;
+		div {
+			border: 4px solid rgba(0, 0, 0, 0.1);
+			border-radius: 50%;
+			border-top: 4px solid var(--color-primary);
+			width: 40px;
+			height: 40px;
+			animation: spin 1s linear infinite;
+			margin-bottom: 1rem;
+		}
 	}
 
 	@keyframes spin {
@@ -93,96 +97,151 @@
 		}
 	}
 
-	.error-container {
-		background-color: var(--color-surface);
-		border-radius: 8px;
-		padding: 2rem;
-		text-align: center;
-		box-shadow: var(--shadow-card);
-	}
-
-	.group-header {
+	main > header {
 		margin-bottom: 2rem;
 		border-bottom: 1px solid var(--color-border);
 		padding-bottom: 1rem;
+
+		h1 {
+			color: var(--color-primary);
+			margin-bottom: 0.5rem;
+		}
+
+		p {
+			font-size: 0.9rem;
+			color: var(--color-text-secondary);
+
+			a {
+				color: var(--color-primary);
+				text-decoration: none;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
 	}
 
-	h1 {
-		color: var(--color-primary);
-		margin-bottom: 0.5rem;
-	}
-
-	.group-parent {
-		font-size: 0.9rem;
-		color: var(--color-text-secondary);
-	}
-
-	.group-parent a {
-		color: var(--color-primary);
-		text-decoration: none;
-	}
-
-	.group-parent a:hover {
-		text-decoration: underline;
-	}
-
-	.section {
+	main section {
 		margin-bottom: 2rem;
+
+		h2 {
+			font-size: 1.5rem;
+			margin-bottom: 1rem;
+			color: var(--color-text);
+		}
 	}
 
-	h2 {
-		font-size: 1.5rem;
-		margin-bottom: 1rem;
-		color: var(--color-text);
+	.subgrupos {
+		border-radius: 8px;
+
+		nav {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+			gap: 1rem;
+			margin-bottom: 2rem;
+
+			a {
+				background-color: var(--color-surface);
+				border-radius: 6px;
+				padding: 0.75rem 1rem;
+				text-decoration: none;
+				color: var(--color-text);
+				box-shadow: var(--shadow-card);
+				transition:
+					transform 0.2s ease,
+					box-shadow 0.2s ease,
+					background-color 0.2s ease;
+				border: 1px solid var(--color-border);
+				display: flex;
+				align-items: center;
+
+				span:first-child {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 24px;
+					height: 24px;
+					margin-right: 0.75rem;
+					opacity: 0.7;
+					transition: opacity 0.2s;
+
+					img {
+						width: 16px;
+						height: 16px;
+						filter: var(
+							--color-primary-filter,
+							brightness(0) saturate(100%) hue-rotate(190deg)
+						);
+					}
+				}
+
+				span:last-child {
+					font-weight: 500;
+				}
+
+				&:hover {
+					transform: translateY(-2px);
+					box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+					background-color: var(--color-primary);
+					color: white;
+					border-color: var(--color-primary);
+
+					span:first-child {
+						opacity: 1;
+
+						img {
+							filter: brightness(0) invert(1);
+						}
+					}
+				}
+			}
+		}
 	}
 
-	.subgroups-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		margin-bottom: 2rem;
-	}
-
-	.subgroup-item {
-		background-color: var(--color-surface);
-		border-radius: 4px;
-		padding: 0.75rem 1rem;
-		text-decoration: none;
-		color: var(--color-text);
-		box-shadow: var(--shadow-card);
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
-		border: 1px solid var(--color-border);
-	}
-
-	.subgroup-item:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-	}
-
-	.courses-grid {
+	.cursos div {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: 1.5rem;
+
+		&:has(> p) {
+			grid-template-columns: 1fr;
+		}
+
+		p {
+			background-color: var(--color-surface);
+			padding: 2rem;
+			text-align: center;
+			width: 100%;
+			border-radius: 8px;
+			color: var(--color-text-secondary);
+		}
 	}
 
-	.btn {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border-radius: 4px;
-		text-decoration: none;
-		font-weight: 500;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-	}
+	.cursos header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1rem;
 
-	.no-courses {
-		background-color: var(--color-surface);
-		padding: 2rem;
-		text-align: center;
-		width: 100%;
-		border-radius: 8px;
-		color: var(--color-text-secondary);
+		h2 {
+			margin: 0;
+			font-size: 1.5rem;
+			color: var(--color-text);
+		}
+
+		a {
+			background-color: var(--color-primary);
+			color: white;
+			padding: 0.5rem 1rem;
+			border-radius: 4px;
+			text-decoration: none;
+			font-weight: 500;
+			transition: background-color 0.2s ease;
+
+			&:hover {
+				background-color: var(--color-primary-hover);
+			}
+		}
 	}
 </style>

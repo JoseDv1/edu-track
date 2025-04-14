@@ -30,7 +30,9 @@
 
 	<nav>
 		<header>
-			<h3>Grupos</h3>
+			<a href="/groups">
+				<h3>Grupos</h3>
+			</a>
 			<button
 				class="btn-new"
 				onclick={() => (window.location.href = "/groups/new")}

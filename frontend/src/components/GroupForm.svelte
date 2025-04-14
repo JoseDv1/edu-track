@@ -23,7 +23,7 @@
 		try {
 			await createGroup(data);
 			alert("Grupo creado exitosamente.");
-			window.location.href = "/";
+			window.location.href = "/groups";
 		} catch (error) {
 			console.error("Error al crear el grupo:", error);
 			alert("Error al crear el grupo. Por favor, inténtelo de nuevo.");
@@ -52,7 +52,7 @@
 	</select>
 
 	<div class="form-actions">
-		<a href="/" class="btn btn-secondary">Cancelar</a>
+		<a href="/groups" class="btn btn-secondary">Cancelar</a>
 		<button type="submit" class="btn btn-primary"> Crear Grupo </button>
 	</div>
 </form>
