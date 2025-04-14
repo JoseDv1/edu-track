@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import CourseDetail from "@/components/CourseDetail.svelte";
+
+// Obtener el ID del curso desde los parámetros de la URL
+const { id } = Astro.params;
+
+// Verificar que el ID exista
+if (!id) {
+	return Astro.redirect("/");
+}
+---
+
+<Layout title="Detalles del Curso - EduTrack">
+	<main>
+		<CourseDetail courseId={id} client:load />
+	</main>
+</Layout>
+
+<style>
+	main {
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+</style>

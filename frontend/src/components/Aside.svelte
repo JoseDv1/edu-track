@@ -51,12 +51,14 @@
 
 <style>
 	aside {
-		height: 100%;
+		position: sticky;
+		min-height: 100dvh;
 		padding: 1rem;
 		min-width: 250px;
 		background-color: var(--color-surface);
 		box-shadow: var(--shadow-card);
 		border-radius: 0 24px 24px 0;
+		z-index: 999;
 	}
 
 	h1 {

@@ -41,7 +41,7 @@ model Clase {
   tema        String
   guion       String
   reflexion   String?
-  duración   Int?     @map("duracion") // En minutos
+  duracion    Int?
   asistentes  Int?
   cursoId     String
   curso       Curso    @relation(fields: [cursoId], references: [id])

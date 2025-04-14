@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ClassForm from "../components/ClassForm.svelte";
+---
+
+<Layout title="Añadir clase">
+	<main class="container">
+		<h1>Añadir nueva clase</h1>
+		<ClassForm client:only="svelte" />
+	</main>
+</Layout>
+
+<style>
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+
+	h1 {
+		margin-bottom: 2rem;
+		color: #333;
+	}
+</style>

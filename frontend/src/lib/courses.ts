@@ -65,7 +65,7 @@ export const deleteCourse = async (id: string) => {
 	const response = await apiTypes.api.courses[":id"].$delete({
 		param: { id }
 	});
-	
+
 	await fetchCourses();
 	return await response.json();
 }
