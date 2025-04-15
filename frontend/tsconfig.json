@@ -7,11 +7,6 @@
   "exclude": [
     "dist"
   ],
-  "references": [
-    {
-      "path": "../backend"
-    }
-  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
