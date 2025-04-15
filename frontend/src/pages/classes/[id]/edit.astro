@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ClassForm from "@/components/ClassForm.svelte";
+
+// Obtener el ID de la clase desde los parámetros de la URL
+const { id } = Astro.params;
+
+// Verificar que el ID exista
+if (!id) {
+	return Astro.redirect("/");
+}
+---
+
+<Layout title="Editar clase">
+	<main class="container">
+		<h1>Editar clase</h1>
+		<ClassForm classId={id} client:only="svelte" />
+	</main>
+</Layout>
+
+<style></style>

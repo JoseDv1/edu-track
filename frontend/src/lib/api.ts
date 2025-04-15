@@ -3,7 +3,7 @@ import type { RPC } from "@/../../backend/src/index"
 
 export const API_URL = "http://localhost:3000"
 
-export const apiTypes = hc<RPC>("/")
+export const apiTypes = hc<RPC>(API_URL)
 const $grupos = apiTypes.api.groups.$get
 const $clases = apiTypes.api.classes.$get
 const $cursos = apiTypes.api.courses.$get
